@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SiteScan PRESTATERRE V1.1</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <main class="container narrow">
+    <section class="hero">
+      <p class="badge">Maquette exploitable - V1.1</p>
+      <h1>SiteScan PRESTATERRE</h1>
+      <p class="lead">Pré-analyse automatique de site à partir d'une adresse : risques, écomobilité, équipements, bruit indirect, accès, déchets, paysage, patrimoine, sols/eaux et urbanisme à compléter par sources officielles.</p>
+    </section>
+    <form action="/analyse" method="post" class="card form-card">
+      <label>Adresse complète</label>
+      <input name="address" placeholder="Ex. 12 rue Victor Hugo, Lyon" required />
+      <label>Référence cadastrale, optionnel</label>
+      <input name="cadastral_reference" placeholder="Ex. 69002 AB 123" />
+      <div class="grid two">
+        <div>
+          <label>Type de bâtiment</label>
+          <select name="building_type">
+            <option value="logement">Logement</option>
+            <option value="tertiaire">Tertiaire</option>
+            <option value="mixte">Mixte</option>
+            <option value="equipement_public">Équipement public</option>
+          </select>
+        </div>
+        <div>
+          <label>Surface indicative en m²</label>
+          <input name="surface_m2" placeholder="Ex. 1250" />
+        </div>
+      </div>
+      <button type="submit">Lancer l'analyse V1.1</button>
+    </form>
+    <section class="card muted-card">
+      <h2>Ce que fait la V1.1</h2>
+      <ul>
+        <li>Carte 500 m et points détectés par OpenStreetMap / Overpass.</li>
+        <li>Déchets / tri dans 3 km.</li>
+        <li>Normalisation informative des réponses Géorisques.</li>
+        <li>Pré-score d'écomobilité inspiré de la logique Effinergie, non officiel.</li>
+        <li>Détection indirecte bruit et nuisances ; dB à raccorder en V1.2.</li>
+        <li>Rubriques BRGM, eaux, PLU/SUP, Natura 2000, TVB prêtes pour connecteurs officiels.</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

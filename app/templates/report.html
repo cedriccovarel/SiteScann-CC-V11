@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rapport SiteScan PRESTATERRE V1.1</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  {% if analysis.point %}<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />{% endif %}
+</head>
+<body>
+  <main class="container">
+    <div class="toolbar no-print">
+      <a href="/">Nouvelle analyse</a>
+      <button onclick="window.print()">Exporter PDF</button>
+      <a href="/reports/{{ xml_file }}">XML</a>
+      <a href="/reports/{{ geojson_file }}">GeoJSON</a>
+    </div>
+
+    <section class="cover">
+      <p class="badge">SiteScan PRESTATERRE V1.1</p>
+      <h1>Rapport de pré-analyse de site</h1>
+      <p class="lead">{{ analysis.point.label if analysis.point else analysis.input.address }}</p>
+      <div class="grid four kpis">
+        <div><span>Vigilance</span><strong>{{ analysis.summary.get('vigilance', 'à vérifier') }}</strong></div>
+        <div><span>Score mobilité</span><strong>{{ analysis.mobility.get('score_100', '-') }}/100</strong></div>
+        <div><span>Équipements 500 m</span><strong>{{ analysis.amenities|length }}</strong></div>
+        <div><span>Déchets 3 km</span><strong>{{ analysis.summary.get('waste_sites_3km', 0) }}</strong></div>
+      </div>
+    </section>
+
+    <section class="grid two">
+      <div class="card">
+        <h2>Identification</h2>
+        <p><strong>Adresse :</strong> {{ analysis.input.address or 'Non renseignée' }}</p>
+        <p><strong>Parcelle :</strong> {{ analysis.input.cadastral_reference or 'À compléter' }}</p>
+        <p><strong>Type de bâtiment :</strong> {{ analysis.input.building_type }}</p>
+        <p><strong>Surface indicative :</strong> {{ analysis.input.surface_m2 or 'Non renseignée' }} m²</p>
+        {% if analysis.point %}
+        <p><strong>Coordonnées :</strong> {{ '%.6f'|format(analysis.point.lat) }}, {{ '%.6f'|format(analysis.point.lon) }}</p>
+        <p><strong>Ville / code postal :</strong> {{ analysis.point.city or '-' }} {{ analysis.point.postcode or '' }}</p>
+        <p><strong>Score géocodage :</strong> {{ analysis.point.score }}</p>
+        {% endif %}
+      </div>
+      <div class="card">
+        <h2>Synthèse opérationnelle</h2>
+        <p><strong>Mobilité :</strong> {{ analysis.mobility.get('level', '-') }}</p>
+        <p>{{ analysis.mobility.get('comment', '') }}</p>
+        <p><strong>Bruit :</strong> {{ analysis.noise.get('level', '-') }}</p>
+        <p><strong>Zones protégées/patrimoine :</strong> {{ analysis.protected_areas.get('level', '-') }}</p>
+      </div>
+    </section>
+
+    {% if analysis.warnings %}
+    <section class="card warning">
+      <h2>Alertes techniques de collecte</h2>
+      <ul>{% for w in analysis.warnings %}<li>{{ w }}</li>{% endfor %}</ul>
+    </section>
+    {% endif %}
+
+    {% if analysis.point %}
+    <section class="card page-break">
+      <h2>Schéma de contexte - rayon 500 m</h2>
+      <div id="map"></div>
+      <p class="small">Le cercle représente 500 m autour du point géocodé. Les marqueurs sont issus d'OpenStreetMap/Overpass dans cette maquette.</p>
+    </section>
+    {% endif %}
+
+    <section class="card page-break">
+      <h2>Risques naturels et technologiques</h2>
+      <table>
+        <thead><tr><th>Risque</th><th>Présence</th><th>Niveau</th><th>Commentaire</th></tr></thead>
+        <tbody>
+        {% for r in analysis.risk_items %}
+          <tr><td>{{ r.theme }}</td><td>{{ r.presence }}</td><td><strong>{{ r.level }}</strong></td><td>{{ r.comment }}</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      <details><summary>Données brutes Géorisques</summary><pre>{{ analysis.risks | tojson(indent=2) }}</pre></details>
+    </section>
+
+    <section class="card page-break">
+      <h2>Mobilité / écomobilité</h2>
+      <div class="grid two">
+        <div>
+          <p><strong>Score indicatif :</strong> {{ analysis.mobility.get('score_100', '-') }}/100</p>
+          <p><strong>Niveau :</strong> {{ analysis.mobility.get('level', '-') }}</p>
+          <p>{{ analysis.mobility.get('comment', '') }}</p>
+          <p class="small">{{ analysis.mobility.get('source_inspiration', '') }}</p>
+        </div>
+        <div>
+          <table>
+            <tr><th>Service le plus proche</th><th>Distance</th></tr>
+            <tr><td>Transport</td><td>{{ analysis.mobility.nearest.transport_m or '-' }} m</td></tr>
+            <tr><td>Commerce</td><td>{{ analysis.mobility.nearest.commerce_m or '-' }} m</td></tr>
+            <tr><td>École</td><td>{{ analysis.mobility.nearest.ecole_m or '-' }} m</td></tr>
+            <tr><td>Santé</td><td>{{ analysis.mobility.nearest.sante_m or '-' }} m</td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="card page-break">
+      <h2>Voies d'accès, équipements et contexte urbain - 500 m</h2>
+      <table>
+        <thead><tr><th>Catégorie</th><th>Nom</th><th>Distance</th><th>Source</th></tr></thead>
+        <tbody>
+        {% for a in analysis.amenities %}<tr><td>{{ a.category }}</td><td>{{ a.name }}</td><td>{{ a.distance_m or '' }} m</td><td>{{ a.source }}</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card page-break">
+      <h2>Bruit, routes, voies ferrées et nuisances</h2>
+      <p><strong>Niveau indicatif :</strong> {{ analysis.noise.get('level', '-') }}</p>
+      <p>{{ analysis.noise.get('note', '') }}</p>
+      {% if analysis.noise.get('warnings') %}<ul>{% for w in analysis.noise.get('warnings') %}<li>{{ w }}</li>{% endfor %}</ul>{% endif %}
+      <table>
+        <thead><tr><th>Type</th><th>Nom/ref</th><th>Distance</th><th>Tags</th></tr></thead>
+        <tbody>
+        {% for f in analysis.noise_features %}<tr><td>{{ f.category }}</td><td>{{ f.name }}</td><td>{{ f.distance_m or '' }} m</td><td>{{ f.tags }}</td></tr>{% endfor %}
+        </tbody>
+      </table>
+      <p class="small">À raccorder : cartes stratégiques du bruit, classement sonore des infrastructures, PEB, niveaux Lden/Ln.</p>
+    </section>
+
+    <section class="card page-break">
+      <h2>Orientation, paysage, eau et végétal</h2>
+      <p>{{ analysis.landscape.get('note', '') }}</p>
+      <p><strong>Éléments détectés :</strong> {{ analysis.landscape.get('count_features', 0) }} ; <strong>eau/zone humide la plus proche :</strong> {{ analysis.landscape.get('nearest_water_or_wetland_m') or '-' }} m</p>
+      <p class="small">Orientation nord affichée sur la carte ; analyse solaire/ombrage à intégrer avec MNT/orthophoto en V1.2.</p>
+    </section>
+
+    <section class="card page-break">
+      <h2>Zones protégées, patrimoine, Natura 2000, TVB</h2>
+      <p><strong>Niveau :</strong> {{ analysis.protected_areas.get('level', '-') }}</p>
+      <p>{{ analysis.protected_areas.get('note', '') }}</p>
+      <ul>{% for s in analysis.protected_areas.get('official_sources_to_check', []) %}<li>{{ s }}</li>{% endfor %}</ul>
+    </section>
+
+    <section class="card page-break">
+      <h2>Sols, géologie et eaux souterraines</h2>
+      <h3>Géologie / sous-sol</h3>
+      <p>{{ analysis.geology.get('note', '') }}</p>
+      <p>{{ analysis.geology.get('operational_comment', '') }}</p>
+      <h3>Eaux souterraines</h3>
+      <p>{{ analysis.water.get('note', '') }}</p>
+      <h3>Sources officielles à raccorder</h3>
+      <ul>{% for s in analysis.geology.get('official_sources_to_check', []) %}<li>{{ s }}</li>{% endfor %}{% for s in analysis.water.get('official_sources_to_check', []) %}<li>{{ s }}</li>{% endfor %}</ul>
+    </section>
+
+    <section class="card page-break">
+      <h2>Urbanisme, PLU et servitudes</h2>
+      <p>{{ analysis.planning.get('note', '') }}</p>
+      <ul>{% for s in analysis.planning.get('official_sources_to_check', []) %}<li>{{ s }}</li>{% endfor %}</ul>
+    </section>
+
+    <section class="card page-break">
+      <h2>Déchets, traitement et tri - rayon 3 km</h2>
+      <table>
+        <thead><tr><th>Nom</th><th>Distance</th><th>Source</th></tr></thead>
+        <tbody>{% for a in analysis.waste_sites %}<tr><td>{{ a.name }}</td><td>{{ a.distance_m or '' }} m</td><td>{{ a.source }}</td></tr>{% endfor %}</tbody>
+      </table>
+    </section>
+
+    <section class="card page-break">
+      <h2>Limites et statut réglementaire</h2>
+      <p>Cette V1.1 est une maquette exploitable de pré-analyse. Elle ne remplace pas les diagnostics réglementaires, études acoustiques, études géotechniques, études environnementales, certificats d'urbanisme ou consultations officielles.</p>
+      <p>Les résultats doivent être considérés comme une aide au cadrage : les sources opposables et études spécialisées restent nécessaires avant décision définitive.</p>
+    </section>
+  </main>
+
+  {% if analysis.point %}
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const lat = {{ analysis.point.lat }};
+    const lon = {{ analysis.point.lon }};
+    const layers = {{ analysis.map_layers | tojson }};
+    const map = L.map('map').setView([lat, lon], 15);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19, attribution: '&copy; OpenStreetMap'}).addTo(map);
+    L.marker([lat, lon]).addTo(map).bindPopup('Site analysé');
+    L.circle([lat, lon], {radius: 500}).addTo(map);
+    L.control.scale().addTo(map);
+    const north = L.control({position: 'topright'});
+    north.onAdd = function(){ const div = L.DomUtil.create('div','north'); div.innerHTML = 'N ↑'; return div; };
+    north.addTo(map);
+    function addPoints(items, radius){
+      (items || []).forEach(a => {
+        if (a.lat && a.lon) L.circleMarker([a.lat, a.lon], {radius: radius || 5}).addTo(map).bindPopup(`${a.category || a.layer}<br>${a.name}<br>${a.distance_m || ''} m`);
+      });
+    }
+    addPoints(layers.amenities, 5);
+    addPoints(layers.noise_features, 6);
+    addPoints(layers.protected_features, 6);
+    addPoints(layers.landscape_features, 4);
+  </script>
+  {% endif %}
+</body>
+</html>
