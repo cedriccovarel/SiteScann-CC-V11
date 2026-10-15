@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block contenu %}
+<section class="carte-blanche">
+  <h1>Analyse de site</h1>
+  <p class="intro">Saisir l'adresse du projet : le rapport suit l'exigence « Analyse de site » du référentiel BEE et
+    les exigences qui s'appuient sur la localisation (éco-mobilité, modes doux, déchets, acoustique).</p>
+  <form method="post" action="/analyse" id="formulaire">
+    <label for="adresse">Adresse</label>
+    <input id="adresse" name="adresse" autocomplete="off" required maxlength="300"
+           placeholder="Ex. 20 avenue de Ségur, Paris" aria-describedby="aide-adresse" aria-autocomplete="list"
+           aria-controls="propositions">
+    <ul id="propositions" role="listbox" hidden></ul>
+    <p id="aide-adresse" class="aide">Choisir une proposition pour fixer précisément le point.</p>
+    <input type="hidden" name="lat"><input type="hidden" name="lon">
+    <input type="hidden" name="libelle"><input type="hidden" name="code_insee">
+
+    <label for="reference">Référence cadastrale (facultatif)</label>
+    <input id="reference" name="reference_cadastrale" maxlength="40" placeholder="Ex. 69123 AB 45">
+    <p class="aide">Si elle est renseignée, l'analyse se centre sur la parcelle.</p>
+
+    <fieldset>
+      <legend>Référentiel</legend>
+      <label class="choix"><input type="radio" name="type_projet" value="neuf" checked> BEE Logement Neuf</label>
+      <label class="choix"><input type="radio" name="type_projet" value="renovation"> BEE Logement Rénovation</label>
+    </fieldset>
+    <button type="submit">Lancer l'analyse</button>
+    <p class="aide" id="attente" hidden role="status">Interrogation des sources publiques… (jusqu'à une minute)</p>
+  </form>
+</section>
+{% endblock %}
+{% block scripts %}<script src="/static/accueil.js"></script>{% endblock %}

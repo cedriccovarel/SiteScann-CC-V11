@@ -1,0 +1,123 @@
+{
+  "neuf": {
+    "analyse_site": {
+      "referential": "BEE Logement Neuf",
+      "version": "04-05-2026",
+      "code": "1.1.1",
+      "title": "Analyse de site",
+      "theme": "Études préalables",
+      "description": "Est définie par \"Analyse de site\", toute analyse qui comporte les éléments suivants :\n● Schéma de fonctionnement du site et paysage\n● Liste des contraintes (monuments historiques, acoustiques, etc.)\n● Proximité des commerces et transports en commun\n● Collecte et tri des déchets ménagers\n● Étude de sol et pollution des sols\nLes points clés définis ci-après sont à intégrer à l’analyse :\n1/ Schéma de fonctionnement du site : Est défini par \"schéma de fonctionnement du site\", tout schéma qui comporte les détails suivants :\n● Le projet (bâtiment)\n● Les voies d’accès\n● Les routes et voies ferrées\n● Les sources de nuisances (bruit, odeurs, poussières, etc.)\n● L’orientation\n● Les éléments paysagers ayant une interaction directe ou indirecte sur le bâtiment en projet\n● Les zones protégées à proximité du site (NATURA 2000, monuments historiques…)\n● Un volet présentant les continuités écologiques retenues pour constituer la TVB (Trame verte et\nbleu) régionale (Le schéma régional de cohérence écologique (SRCE)) et qui identifie les réservoirs de biodiversité, les corridors écologiques qui les constituent ainsi que les objectifs de préservation/remise en bon état)\n● Les informations concernant l’état écologique des sols et des masses d’eaux souterraines\nsituées sous la parcelle\n● Les caractéristiques géologiques de la parcelle\nLe schéma doit représenter les alentours du bâtiment dans un périmètre de 500 mètres.\n2/ Liste des contraintes : La liste des contraintes doit recenser les éléments susceptibles de créer des pollutions perceptibles dans l'environnement du projet :\n● Pollutions sonores (route, voie ferrée, aéroport, etc.)\n● Pollutions olfactives (zone industrielle, exploitation agricole, etc.)\n● Pollutions visuelles (bâtiment mal intégré au paysage, panneaux publicitaires, etc.)\n● Pollutions électromagnétiques (lignes à haute tension, antenne relais, etc.)\nIl est possible d’obtenir ces informations en consultant la Mairie ou les documents d’urbanisme.\n3/ Proximité des commerces, services et transports en commun : Pour valoriser la possibilité de \"mobilité douce\", la proximité des commerces d’alimentation, des services et des transports en commun est indiquée dans une liste, quand ceux-ci se trouvent à une distance de moins d’1 km :\n● Commerces alimentaires\n● Transports scolaires\n● Transports en commun\n● Médecin / pharmacie\n● Établissement scolaire / crèche\nIl est possible d’obtenir ces informations en consultant la Mairie ou les documents d’urbanisme.\n4/ Collecte et tri des déchets ménagers Prévoir la liste des sites de traitement et tri des déchets ménagers dans un rayon de 3 km.\n5/ Étude de sol et pollution des sols Prévoir un diagnostic sur les pollutions et la nature des sols.",
+      "pieces": [
+        "Schéma de fonctionnement du site",
+        "Liste des contraintes",
+        "Localisation des commerces, services et transports en commun",
+        "Localisation des points de collecte des déchets ménagers (ordures ménagères et tri)",
+        "Étude de sol",
+        "Diagnostic pollution des sols"
+      ]
+    },
+    "eco_mobilite": {
+      "referential": "BEE Logement Neuf",
+      "version": "04-05-2026",
+      "code": "1.1.5",
+      "title": "Potentiel d’éco-mobilité",
+      "theme": "Études préalables",
+      "description": "Les déplacements ont un impact important sur les consommations d’énergie au plan national ainsi que sur la qualité de l’air, mais également sur le budget des ménages. L’utilisation des modes de transports doux réduit sensiblement ces impacts. Afin d’évaluer le potentiel d’éco-mobilité de l’opération, le maître d’ouvrage renseignera le questionnaire \"Évaluation du potentiel éco-mobilité des bâtiments\".",
+      "pieces": [
+        "Résultat du questionnaire éco-mobilité"
+      ]
+    },
+    "dechets_menagers": {
+      "referential": "BEE Logement Neuf",
+      "version": "04-05-2026",
+      "code": "4.2.1",
+      "title": "Traitement collectif des déchets ménagers",
+      "theme": "Déchets",
+      "description": "Pour favoriser le recyclage des déchets ménagers et réduire les quantités collectées (notamment les déchets organiques), les occupants doivent pouvoir trier et stocker leurs déchets sur place. Pour cela, un emplacement spécifique de collecte et de stockage doit être défini dans le logement.\nConcernant les déchets organiques, il devra être prévu un emplacement spécifique pour un \"bio-seau\", mentionné comme tel sur les plans d’architecte.\nUn composteur sera mis en place au sein de la parcelle. Il devra respecter les différentes règles sanitaires en vigueur dans chaque département. À défaut, il devra être placé à au moins 8 mètres de toutes prises d’air (8 mètres en vue directe, sinon aucune distance n’est préconisée).\nNB : au cas où il existerait un mode de compostage partagé à l’échelle du quartier, ou en mode d’apport volontaire, ou une collecte en porte à porte de biodéchets, la pose d’un composteur sur la parcelle n’est pas obligatoire.",
+      "pieces": [
+        "Plan ou notice mentionnant l’emplacement de collecte/stockage dans le logement",
+        "Plan du local poubelle et une notice explicative pour le dimensionnement",
+        "Plan mentionnant l’emplacement du composteur",
+        "Attestation de pose du composteur OU Plan du quartier avec composteur partagé OU container d’apport volontaire OU Attestation d’une collecte en porte à porte 4.3. Confort"
+      ]
+    },
+    "modes_doux": {
+      "referential": "BEE Logement Neuf",
+      "version": "04-05-2026",
+      "code": "4.8.1",
+      "title": "Proximité des modes doux",
+      "theme": "Mobilité douce et décarbonée",
+      "description": "Le bâtiment doit répondre aux besoins de ses futurs usagers. Ainsi, le bâtiment résidentiel devra être situé à moins de 1 km du réseau de transports en commun et des modes de déplacement doux comme les pistes cyclables.",
+      "pieces": [
+        "Plan du site et des axes de déplacement environnants"
+      ]
+    },
+    "localisation_seniors": {
+      "referential": "BEE Logement Neuf",
+      "version": "04-05-2026",
+      "code": "4.10.2",
+      "title": "Localisation du site et aménagement de ses abords",
+      "theme": "Maintien des séniors à domicile",
+      "description": "Le site doit être localisé à moins de 500 mètres des transports en commun et des commerces de base (épicerie, boulangerie, pharmacie..) et à moins d’un kilomètre d’un centre de santé.\nAfin d’éviter tout accident, les cheminements extérieurs menant au bâtiment doivent être revêtus de matériaux non glissants et suffisamment éclairés par un système de détecteur de présence.\nLe site devra comporter une signalétique suffisamment visible (panneaux avec des caractères de grande taille) dès son entrée pour indiquer le bâtiment et ses différents locaux (parking, local vélo, loge du gardien, salles communes, caves, locaux poubelles, etc.).",
+      "pieces": [
+        "Plans justifiant de la proximité des zones de commerces, des transports en commun et des services de soin",
+        "CCTP des lots concernés",
+        "Plans des aménagements des parties communes extérieures Dans le cas où l’opération de construction serait localisée à une distance supérieure à celles indiquées, le maître d’ouvrage transmettra tout document justifiant l’existence de services à domicile garantissant l’accès des occupants aux transports, aux commerces de base et aux soins médicaux."
+      ]
+    }
+  },
+  "renovation": {
+    "analyse_site": {
+      "referential": "BEE Logement Rénovation",
+      "version": "04-05-2026",
+      "code": "1.1.1",
+      "title": "Analyse de site",
+      "theme": "Études préalables",
+      "description": "Est définie par \"Analyse de site\", toute analyse qui comporte les éléments suivants :\n● Schéma de fonctionnement du site et paysage\n● Liste des contraintes (monuments historiques, acoustiques, etc.)\n● Proximité des commerces et transports en commun\n● Collecte et tri des déchets ménagers\nLes points clés définis ci-après sont à intégrer à l’analyse :\n1/ Schéma de fonctionnement du site : Est défini par \"schéma de fonctionnement du site\", tout schéma qui comporte les détails suivants :\n● Le projet de rénovation (bâtiment)\n● Les voies d’accès\n● Les routes et voies ferrées\n● Les sources de nuisances (bruits, odeurs, poussières, etc.)\n● L’orientation,\n● Les éléments paysagers ayant une interaction directe ou indirecte sur le bâtiment\n● Les zones protégées à proximité du site (NATURA 2000, monuments historiques…)\n● Un volet présentant les continuités écologiques retenues pour constituer la TVB (Trame verte et\nbleu) régionale (Le schéma régional de cohérence écologique (SRCE)) et qui identifie les réservoirs de biodiversité, les corridors écologiques qui les constituent ainsi que les objectifs de préservation/remise en bon état)\n● Les informations concernant l’état écologique des sols et des masses d’eaux souterraines\nsituées sous la parcelle\n● Les caractéristiques géologiques de la parcelle\nLe schéma doit représenter les alentours du bâtiment dans un périmètre de 500 mètres.\n2/ Liste des contraintes : La liste des contraintes doit recenser les éléments susceptibles de créer des pollutions perceptibles dans l'environnement du projet :\n● Pollutions sonores (route, voie ferrée, aéroport, etc.)\n● Pollutions olfactives (zone industrielle, exploitation agricole, etc.)\n● Pollutions visuelles (bâtiment mal intégré au paysage, panneaux publicitaires, etc.)\n● Pollutions électromagnétiques (ligne à haute tension, antenne relais, etc.)\nIl est possible d’obtenir ces informations en consultant la Mairie ou les documents d’urbanisme.\n3/ Proximité des commerces, services et transports en commun : Pour valoriser la possibilité de \"mobilité douce\", la proximité des commerces d’alimentation, des services et des transports en commun est indiquée dans une liste, quand ceux-ci se trouvent à une distance de moins d’1 km :\n● Commerces alimentaires\n● Transports scolaires\n● Transports en commun\n● Médecin / pharmacie\n● Établissement scolaire / crèche\nIl est possible d’obtenir ces informations en consultant la Mairie ou les documents d’urbanisme.\n4/ Collecte et tri des déchets ménagers Prévoir la liste des sites de traitement et tri des déchets ménagers dans un rayon de 3 km.\n5/ Étude de sol et pollution des sols Prévoir un diagnostic sur les pollutions et la nature des sols.",
+      "pieces": [
+        "Schéma de fonctionnement du site",
+        "Liste des contraintes",
+        "Localisation des commerces, services et transports en commun",
+        "Localisation des points de collecte des déchets ménagers (ordures ménagères et tri)",
+        "Etude de sol",
+        "Diagnostic pollution des sols"
+      ]
+    },
+    "eco_mobilite": {
+      "referential": "BEE Logement Rénovation",
+      "version": "04-05-2026",
+      "code": "1.1.5",
+      "title": "Potentiel d’éco-mobilité",
+      "theme": "Études préalables",
+      "description": "Les déplacements ont un impact important sur les consommations d’énergie au plan national ainsi que sur la qualité de l’air, mais également sur le budget des ménages. L’utilisation des modes de transports doux réduit sensiblement ces impacts. Afin d’évaluer le potentiel d’éco-mobilité de l’opération, le maître d’ouvrage renseignera le questionnaire \"Évaluation du potentiel éco-mobilité des bâtiments\".",
+      "pieces": [
+        "Résultat du questionnaire éco-mobilité"
+      ]
+    },
+    "acoustique_avant_travaux": {
+      "referential": "BEE Logement Rénovation",
+      "version": "04-05-2026",
+      "code": "1.1.6",
+      "title": "Acoustique extérieure avant travaux",
+      "theme": "Études préalables",
+      "description": "Cette exigence répond à l’objectif de connaître la performance du bâtiment existant et d’aider à faire les choix de travaux les plus pertinents possibles.\nAfin de connaître la valeur de l’isolement acoustique de façade, une mesure doit être effectuée conformément au “Guide de Mesures Acoustiques” et plus particulièrement son chapitre §4.3.4.\nA défaut de mesure, une note de calcul théorique de l’isolement de façade peut être produite.",
+      "pieces": [
+        "Rapport de mesure acoustique OU note de calcul théorique de l’isolement de façade"
+      ]
+    },
+    "dechets_menagers": {
+      "referential": "BEE Logement Rénovation",
+      "version": "04-05-2026",
+      "code": "4.2.1",
+      "title": "Traitement collectif des déchets ménagers",
+      "theme": "Déchets",
+      "description": "Pour favoriser le recyclage des déchets ménagers et réduire les quantités collectées (notamment les déchets organiques), les occupants doivent pouvoir trier et stocker leurs déchets sur place. Pour cela, un emplacement spécifique de collecte et de stockage doit être défini dans le logement.\nConcernant les déchets organiques, il devra être prévu un emplacement spécifique pour un \"bio-seau\", mentionné comme tel sur les plans d’architecte.\nUn composteur sera mis en place au sein de la parcelle. Il devra respecter les différentes règles sanitaires en vigueur dans chaque département. À défaut, il devra être placé à au moins 8 mètres de toutes prises d’air (8 mètres en vue directe, sinon aucune distance n’est préconisée).\nNB : au cas où il existerait un mode de compostage partagé à l’échelle du quartier, ou en mode d’apport volontaire, ou une collecte en porte à porte de biodéchets, la pose d’un composteur sur la parcelle n’est pas obligatoire.",
+      "pieces": [
+        "Plan ou notice mentionnant l’emplacement de collecte/stockage dans le logement",
+        "Plan du local poubelle et une notice explicative pour le dimensionnement",
+        "Plan mentionnant l’emplacement du composteur",
+        "Attestation de pose du composteur OU Plan du quartier avec composteur partagé ou container d’apport volontaire OU Attestation d’une collecte en porte à porte 4.3. Confort"
+      ]
+    }
+  }
+}

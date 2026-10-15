@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block titre %}Analyse de site – {{ a.lieu.libelle if a.lieu else a.demande.adresse }}{% endblock %}
+{% block tete %}<link rel="stylesheet" href="/static/leaflet/leaflet.css">{% endblock %}
+{% block contenu %}
+<div class="actions no-print">
+  <a href="/">Nouvelle analyse</a>
+  <button type="button" onclick="window.print()">Imprimer / PDF</button>
+  {% if a.lieu %}
+  <button type="button" data-export="json">Données (JSON)</button>
+  <button type="button" data-export="geojson">Carte (GeoJSON)</button>
+  {% endif %}
+</div>
+
+<section class="entete">
+  <p class="surtitre">{{ a.exigences[0].referentiel if a.exigences else "Analyse de site" }}
+    {% if a.exigences %}– version {{ a.exigences[0].version }}{% endif %}</p>
+  <h1>{{ a.lieu.libelle if a.lieu else (a.demande.adresse or "Site non localisé") }}</h1>
+  <p>Analyse du {{ a.date[:10] }}{% if a.lieu %} · {{ '%.5f'|format(a.lieu.lat) }}, {{ '%.5f'|format(a.lieu.lon) }}{% endif %}</p>
+</section>
+
+{% if a.alertes %}
+<section class="alertes" role="alert"><ul>{% for x in a.alertes %}<li>{{ x }}</li>{% endfor %}</ul></section>
+{% endif %}
+
+{% if a.lieu %}
+<p class="legende-statuts no-print">{% for cle, libelle in STATUTS.items() %}<span class="statut {{ cle }}">{{ libelle }}</span>{% endfor %}</p>
+
+{% for ex in a.exigences %}
+<section class="exigence">
+  <h2><span class="code">{{ ex.code }}</span> {{ ex.titre }}</h2>
+  <details class="texte-ref"><summary>Texte du référentiel</summary><p>{{ ex.description }}</p></details>
+  {% for rub in ex.rubriques %}
+  <div class="rubrique">
+    <h3>{{ rub.titre }}</h3>
+    {% if rub.piece %}<p class="piece">Pièce justificative : {{ rub.piece }}</p>{% endif %}
+    {% if rub.schema_site %}
+    <div id="carte" role="img" aria-label="Schéma de fonctionnement du site dans un rayon de 500 mètres"></div>
+    <ul class="legende" id="legende"></ul>
+    {% endif %}
+    <table>
+      <thead><tr><th>Élément</th><th>Résultat</th><th>Statut</th><th>Source</th></tr></thead>
+      <tbody>
+      {% for l in rub.lignes %}
+        <tr>
+          <td>{{ l.libelle }}</td>
+          <td>{{ l.resultat }}
+            {% if l.elements|length > 1 %}
+            <details><summary>Détail ({{ l.elements|length }})</summary>
+              <ul class="detail">{% for e in l.elements %}<li>{{ e.nom or LEGENDE[e.categorie].libelle ~ " sans nom" }} – {{ e.distance_m }} m</li>{% endfor %}</ul>
+            </details>
+            {% endif %}
+          </td>
+          <td><span class="statut {{ l.statut }}">{{ STATUTS[l.statut] }}</span></td>
+          <td class="source">{{ l.source }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endfor %}
+</section>
+{% endfor %}
+{% endif %}
+
+<section class="exigence">
+  <h2>Sources interrogées</h2>
+  <table>
+    <thead><tr><th>Source</th><th>Adresse</th><th>Résultat</th><th>Date</th></tr></thead>
+    <tbody>{% for s in a.sources %}
+      <tr><td>{{ s.nom }}</td><td class="source">{{ s.url }}</td>
+        <td><span class="statut {{ 'donnee' if s.ok else 'indisponible' }}">{{ "Réponse reçue" if s.ok else s.detail }}</span></td>
+        <td>{{ s.date[:16]|replace("T", " ") }}</td></tr>
+    {% endfor %}</tbody>
+  </table>
+  <p class="aide">Distances à vol d'oiseau, mesurées jusqu'au point le plus proche de chaque objet. Les données
+    OpenStreetMap sont contributives et peuvent être incomplètes.</p>
+</section>
+{% endblock %}
+{% block scripts %}
+{% if a.lieu %}
+<script type="application/json" id="donnees">{{ donnees|tojson }}</script>
+<script type="application/json" id="legende-categories">{{ LEGENDE|tojson }}</script>
+<script src="/static/leaflet/leaflet.js"></script>
+<script src="/static/rapport.js"></script>
+{% endif %}
+{% endblock %}

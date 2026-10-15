@@ -1,66 +1,98 @@
-from pydantic import BaseModel, Field
-from typing import Optional, List, Dict, Any
+from datetime import datetime
+from typing import Any, Literal
 
-class SiteRequest(BaseModel):
-    address: Optional[str] = Field(default=None, description="Adresse complete")
-    cadastral_reference: Optional[str] = Field(default=None, description="Reference cadastrale libre")
-    radius_m: int = Field(default=500, ge=100, le=2000)
-    waste_radius_m: int = Field(default=3000, ge=500, le=10000)
-    building_type: str = Field(default="logement", description="logement, tertiaire, mixte")
-    surface_m2: Optional[float] = Field(default=None, ge=0)
+from pydantic import BaseModel, Field, field_validator
 
-class GeoPoint(BaseModel):
+Statut = Literal["donnee", "indicatif", "absent", "a_completer", "indisponible"]
+
+STATUTS: dict[str, str] = {
+    "donnee": "Donnée officielle",
+    "indicatif": "Indicatif (OpenStreetMap)",
+    "absent": "Rien trouvé – à vérifier",
+    "a_completer": "À compléter",
+    "indisponible": "Source indisponible",
+}
+
+
+def maintenant() -> str:
+    return datetime.now().isoformat(timespec="seconds")
+
+
+class Demande(BaseModel):
+    adresse: str = Field(default="", max_length=300)
+    reference_cadastrale: str = Field(default="", max_length=40)
+    type_projet: Literal["neuf", "renovation"] = "neuf"
+    # Renseignés quand l'utilisateur choisit une proposition du géocodeur.
+    lat: float | None = Field(default=None, ge=-90, le=90)
+    lon: float | None = Field(default=None, ge=-180, le=180)
+    libelle: str = Field(default="", max_length=300)
+    code_insee: str = Field(default="", max_length=5)
+
+    @field_validator("lat", "lon", mode="before")
+    @classmethod
+    def _vide_si_absent(cls, v):
+        return None if v == "" else v  # champs cachés du formulaire non remplis
+
+
+class Lieu(BaseModel):
     lat: float
     lon: float
-    label: str | None = None
+    libelle: str = ""
+    code_insee: str = ""
     score: float | None = None
-    city: str | None = None
-    postcode: str | None = None
-    citycode: str | None = None
+    type: str = ""
 
-class Amenity(BaseModel):
-    category: str
-    name: str
-    distance_m: float | None = None
-    lat: float | None = None
-    lon: float | None = None
-    source: str = "OpenStreetMap / Overpass"
-    tags: Dict[str, Any] = Field(default_factory=dict)
 
-class LinearFeature(BaseModel):
-    category: str
-    name: str
-    distance_m: float | None = None
-    lat: float | None = None
-    lon: float | None = None
-    source: str = "OpenStreetMap / Overpass"
-    tags: Dict[str, Any] = Field(default_factory=dict)
+class Source(BaseModel):
+    nom: str
+    url: str
+    ok: bool
+    detail: str = ""
+    date: str = Field(default_factory=maintenant)
 
-class RiskItem(BaseModel):
-    theme: str
-    presence: str = "Non determine"
-    level: str = "A verifier"
-    comment: str = ""
+
+class Element(BaseModel):
+    """Objet géolocalisé autour du site."""
+    categorie: str
+    nom: str = ""
+    distance_m: int
+    lat: float
+    lon: float
+    geometrie: dict[str, Any] | None = None
+    source: str = "OpenStreetMap"
+
+
+class Ligne(BaseModel):
+    libelle: str
+    resultat: str
+    statut: Statut
     source: str = ""
-    raw_key: str | None = None
+    elements: list[Element] = Field(default_factory=list)
 
-class SiteAnalysis(BaseModel):
-    input: SiteRequest
-    point: Optional[GeoPoint] = None
-    parcel: Dict[str, Any] = Field(default_factory=dict)
-    risks: Dict[str, Any] = Field(default_factory=dict)
-    risk_items: List[RiskItem] = Field(default_factory=list)
-    amenities: List[Amenity] = Field(default_factory=list)
-    waste_sites: List[Amenity] = Field(default_factory=list)
-    transport_features: List[Amenity] = Field(default_factory=list)
-    noise_features: List[LinearFeature] = Field(default_factory=list)
-    noise: Dict[str, Any] = Field(default_factory=dict)
-    mobility: Dict[str, Any] = Field(default_factory=dict)
-    protected_areas: Dict[str, Any] = Field(default_factory=dict)
-    geology: Dict[str, Any] = Field(default_factory=dict)
-    water: Dict[str, Any] = Field(default_factory=dict)
-    planning: Dict[str, Any] = Field(default_factory=dict)
-    landscape: Dict[str, Any] = Field(default_factory=dict)
-    map_layers: Dict[str, Any] = Field(default_factory=dict)
-    summary: Dict[str, Any] = Field(default_factory=dict)
-    warnings: List[str] = Field(default_factory=list)
+
+class Rubrique(BaseModel):
+    titre: str
+    piece: str | None = None
+    schema_site: bool = False
+    lignes: list[Ligne]
+
+
+class Exigence(BaseModel):
+    cle: str
+    code: str
+    titre: str
+    referentiel: str
+    version: str
+    description: str
+    rubriques: list[Rubrique]
+
+
+class Analyse(BaseModel):
+    demande: Demande
+    date: str = Field(default_factory=maintenant)
+    lieu: Lieu | None = None
+    parcelle: dict[str, Any] | None = None
+    exigences: list[Exigence] = Field(default_factory=list)
+    elements: list[Element] = Field(default_factory=list)
+    sources: list[Source] = Field(default_factory=list)
+    alertes: list[str] = Field(default_factory=list)

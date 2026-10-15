@@ -1,51 +1,31 @@
-<!doctype html>
-<html lang="fr">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SiteScan PRESTATERRE V1.1</title>
-  <link rel="stylesheet" href="/static/style.css" />
-</head>
-<body>
-  <main class="container narrow">
-    <section class="hero">
-      <p class="badge">Maquette exploitable - V1.1</p>
-      <h1>SiteScan PRESTATERRE</h1>
-      <p class="lead">Pré-analyse automatique de site à partir d'une adresse : risques, écomobilité, équipements, bruit indirect, accès, déchets, paysage, patrimoine, sols/eaux et urbanisme à compléter par sources officielles.</p>
-    </section>
-    <form action="/analyse" method="post" class="card form-card">
-      <label>Adresse complète</label>
-      <input name="address" placeholder="Ex. 12 rue Victor Hugo, Lyon" required />
-      <label>Référence cadastrale, optionnel</label>
-      <input name="cadastral_reference" placeholder="Ex. 69002 AB 123" />
-      <div class="grid two">
-        <div>
-          <label>Type de bâtiment</label>
-          <select name="building_type">
-            <option value="logement">Logement</option>
-            <option value="tertiaire">Tertiaire</option>
-            <option value="mixte">Mixte</option>
-            <option value="equipement_public">Équipement public</option>
-          </select>
-        </div>
-        <div>
-          <label>Surface indicative en m²</label>
-          <input name="surface_m2" placeholder="Ex. 1250" />
-        </div>
-      </div>
-      <button type="submit">Lancer l'analyse V1.1</button>
-    </form>
-    <section class="card muted-card">
-      <h2>Ce que fait la V1.1</h2>
-      <ul>
-        <li>Carte 500 m et points détectés par OpenStreetMap / Overpass.</li>
-        <li>Déchets / tri dans 3 km.</li>
-        <li>Normalisation informative des réponses Géorisques.</li>
-        <li>Pré-score d'écomobilité inspiré de la logique Effinergie, non officiel.</li>
-        <li>Détection indirecte bruit et nuisances ; dB à raccorder en V1.2.</li>
-        <li>Rubriques BRGM, eaux, PLU/SUP, Natura 2000, TVB prêtes pour connecteurs officiels.</li>
-      </ul>
-    </section>
-  </main>
-</body>
-</html>
+{% extends "base.html" %}
+{% block contenu %}
+<section class="carte-blanche">
+  <h1>Analyse de site</h1>
+  <p class="intro">Saisir l'adresse du projet : le rapport suit l'exigence « Analyse de site » du référentiel BEE et
+    les exigences qui s'appuient sur la localisation (éco-mobilité, modes doux, déchets, acoustique).</p>
+  <form method="post" action="/analyse" id="formulaire">
+    <label for="adresse">Adresse</label>
+    <input id="adresse" name="adresse" autocomplete="off" required maxlength="300"
+           placeholder="Ex. 20 avenue de Ségur, Paris" aria-describedby="aide-adresse" aria-autocomplete="list"
+           aria-controls="propositions">
+    <ul id="propositions" role="listbox" hidden></ul>
+    <p id="aide-adresse" class="aide">Choisir une proposition pour fixer précisément le point.</p>
+    <input type="hidden" name="lat"><input type="hidden" name="lon">
+    <input type="hidden" name="libelle"><input type="hidden" name="code_insee">
+
+    <label for="reference">Référence cadastrale (facultatif)</label>
+    <input id="reference" name="reference_cadastrale" maxlength="40" placeholder="Ex. 69123 AB 45">
+    <p class="aide">Si elle est renseignée, l'analyse se centre sur la parcelle.</p>
+
+    <fieldset>
+      <legend>Référentiel</legend>
+      <label class="choix"><input type="radio" name="type_projet" value="neuf" checked> BEE Logement Neuf</label>
+      <label class="choix"><input type="radio" name="type_projet" value="renovation"> BEE Logement Rénovation</label>
+    </fieldset>
+    <button type="submit">Lancer l'analyse</button>
+    <p class="aide" id="attente" hidden role="status">Interrogation des sources publiques… (jusqu'à une minute)</p>
+  </form>
+</section>
+{% endblock %}
+{% block scripts %}<script src="/static/accueil.js"></script>{% endblock %}

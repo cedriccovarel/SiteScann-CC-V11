@@ -1,6 +1,7 @@
 services:
   - type: web
-    name: sitescan-prestaterre-v11
+    name: sitescan-prestaterre
     runtime: python
     buildCommand: pip install -r requirements.txt
-    startCommand: python3 -m uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /

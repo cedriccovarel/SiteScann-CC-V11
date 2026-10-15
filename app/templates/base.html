@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titre %}SiteScan Prestaterre{% endblock %}</title>
+  <link rel="stylesheet" href="/static/style.css">
+  {% block tete %}{% endblock %}
+</head>
+<body>
+  <header class="bandeau"><a href="/">SiteScan <strong>Prestaterre</strong></a><span>Analyse de site – référentiel BEE</span></header>
+  <main>{% block contenu %}{% endblock %}</main>
+  <footer>Pré-analyse automatique à partir de données publiques. Elle ne remplace ni les études réglementaires,
+    acoustiques, géotechniques ou environnementales, ni la consultation des documents opposables.</footer>
+  {% block scripts %}{% endblock %}
+</body>
+</html>
